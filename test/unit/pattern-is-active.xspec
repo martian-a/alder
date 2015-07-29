@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description 
+	xmlns:sch="http://ns.kaikoda.com/xspec/schematron/functions"
+	xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+	xmlns:x="http://www.jenitennison.com/xslt/xspec"	
+	stylesheet="../../src/functions.xsl">
+		
+	<x:scenario label="Pattern is active">
+	
+		<x:scenario label="True">
+			
+			<x:scenario label="Only pattern present.">
+				
+				<x:call function="sch:pattern-is-active">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:active-pattern id="richard" />
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'richard'" />
+				</x:call>
+				
+				<x:expect label="Pattern is active." select="true()" />
+				
+			</x:scenario>
+			
+			<x:scenario label="First pattern present.">
+				
+				<x:call function="sch:pattern-is-active">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:active-pattern id="richard" />
+							<svrl:active-pattern id="olive" />
+							<svrl:active-pattern id="yorrick" />
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'richard'" />
+				</x:call>
+				
+				<x:expect label="Pattern is active." select="true()" />
+				
+			</x:scenario>
+			
+			<x:scenario label="Second pattern present.">
+				
+				<x:call function="sch:pattern-is-active">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:active-pattern id="olive" />
+							<svrl:active-pattern id="richard" />
+							<svrl:active-pattern id="yorrick" />
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'richard'" />
+				</x:call>
+				
+				<x:expect label="Pattern is active." select="true()" />
+				
+			</x:scenario>
+			
+			<x:scenario label="Last pattern present.">
+				
+				<x:call function="sch:pattern-is-active">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:active-pattern id="olive" />
+							<svrl:active-pattern id="yorrick" />
+							<svrl:active-pattern id="richard" />
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'richard'" />
+				</x:call>
+				
+				<x:expect label="Pattern is active." select="true()" />
+				
+			</x:scenario>
+			
+		</x:scenario>
+		
+		<x:scenario label="False">
+			
+			<x:scenario label="No patterns.">
+				
+				<x:call function="sch:pattern-is-active">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output />
+					</x:param>
+					<x:param select="'richard'" />
+				</x:call>
+				
+				<x:expect label="Pattern is not active." select="false()" />
+				
+			</x:scenario>
+			
+			<x:scenario label="One pattern present.">
+				
+				<x:call function="sch:pattern-is-active">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:active-pattern id="olive" />
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'richard'" />
+				</x:call>
+				
+				<x:expect label="Pattern is not active." select="false()" />
+				
+			</x:scenario>
+			
+			<x:scenario label="Two patterns present.">
+				
+				<x:call function="sch:pattern-is-active">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:active-pattern id="olive" />
+							<svrl:active-pattern id="yorrick" />
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'richard'" />
+				</x:call>
+				
+				<x:expect label="Pattern is not active." select="false()" />
+				
+			</x:scenario>
+			
+		</x:scenario>
+		
+	</x:scenario>
+	
+</x:description>

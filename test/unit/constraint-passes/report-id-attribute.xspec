@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description 
+	xmlns:sch="http://ns.kaikoda.com/xspec/schematron/functions"
+	xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+	xmlns:x="http://www.jenitennison.com/xslt/xspec"	
+	stylesheet="../../../src/functions.xsl">
+		
+	<x:scenario label="constraint-passes()">
+
+		<x:scenario label="True">
+			
+			<x:scenario label="No constraints.">
+				
+				<x:call function="sch:constraint-passes">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output />
+					</x:param>
+					<x:param select="'surface-missing'" />
+				</x:call>
+				
+				<x:expect label="No successful-report with an @id of 'surface-missing' is detected." select="true()" />
+				
+			</x:scenario>
+			
+			<x:scenario label="One constraint present.">
+				
+				<x:call function="sch:constraint-passes">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:successful-report test="self::*/@id"
+								id="id-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID.</svrl:text>
+							</svrl:successful-report>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'surface-missing'" />
+				</x:call>
+				
+				<x:expect label="No successful-report with an @id of 'surface-missing' is detected." select="true()" />
+				
+			</x:scenario>
+			
+			<x:scenario label="Two patterns present.">
+				
+				<x:call function="sch:constraint-passes">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:successful-report test="self::*/@id"
+								id="id-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID.</svrl:text>
+							</svrl:successful-report>
+							<svrl:successful-report test="self::*[@surface = preceding::colour/@surface]"
+								id="surface-duplicate"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Duplicate surface.  A colour has already been specified for this surface.</svrl:text>
+							</svrl:successful-report>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'surface-missing'" />
+				</x:call>
+				
+				<x:expect label="No successful-report with an @id of 'surface-missing' is detected." select="true()" />
+				
+			</x:scenario>
+			
+		</x:scenario>
+		
+
+		<x:scenario label="False">
+			
+			<x:scenario label="Only constraint present.">
+						
+				<x:call function="sch:constraint-passes">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:successful-report test="self::*/@id"
+								id="id-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID.</svrl:text>
+							</svrl:successful-report>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'id-missing'" />
+				</x:call>
+				
+				<x:expect label="A successful-report with an @id of 'id-missing' is detected." select="false()" />
+															
+			</x:scenario>
+			
+			<x:scenario label="First constraint present.">
+						
+				<x:call function="sch:constraint-passes">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:successful-report test="self::*/@id"
+								id="id-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID.</svrl:text>
+							</svrl:successful-report>
+							<svrl:successful-report test="self::*/@surface"
+								id="surface-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Surface.  At least one surface must be specified for each colour.</svrl:text>
+							</svrl:successful-report>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'id-missing'" />
+				</x:call>
+				
+				<x:expect label="A successful-report with an @id of 'id-missing' is detected." select="false()" />
+								
+			</x:scenario>
+			
+			<x:scenario label="Second constraint present.">
+						
+				<x:call function="sch:constraint-passes">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:successful-report test="self::*/@id"
+								id="id-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID.</svrl:text>
+							</svrl:successful-report>
+							<svrl:successful-report test="self::*/@surface"
+								id="surface-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Surface.  At least one surface must be specified for each colour.</svrl:text>
+							</svrl:successful-report>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'id-missing'" />
+				</x:call>
+				
+				<x:expect label="A successful-report with an @id of 'id-missing' is detected." select="false()" />
+									
+			</x:scenario>
+			
+			<x:scenario label="Last constraint present.">
+						
+				<x:call function="sch:constraint-passes">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:successful-report test="self::*/@id"
+								id="id-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID.</svrl:text>
+							</svrl:successful-report>
+							<svrl:successful-report test="self::*/@surface"
+								id="surface-missing"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Surface.  At least one surface must be specified for each colour.</svrl:text>
+							</svrl:successful-report>
+							<svrl:successful-report test="self::*[@surface = preceding::colour/@surface]"
+								id="surface-duplicate"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Duplicate surface.  A colour has already been specified for this surface.</svrl:text>
+							</svrl:successful-report>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'id-missing'" />
+				</x:call>
+				
+				<x:expect label="A successful-report with an @id of 'surface-missing' is detected." select="false()" />
+								
+			</x:scenario>
+			
+		</x:scenario>
+	
+	</x:scenario>
+	
+</x:description>

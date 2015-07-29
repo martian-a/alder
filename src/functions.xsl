@@ -149,7 +149,7 @@
         <xsl:param name="context" as="document-node()" />
         <xsl:param name="constraint-id" as="xs:string" />
         
-        <xsl:value-of select="if (
+        <xsl:value-of select="count(
                 $context/*:schematron-output/*
                     [local-name() = ('failed-assert','successful-report')]
                     [
@@ -159,9 +159,7 @@
                             ends-with(., concat('[ID: ', $constraint-id, ']'))
                         )
                     ]
-            ) 
-            then true() 
-            else false()" />
+            )" />
         
     </xsl:function>
     

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description 
+	xmlns:sch="http://ns.kaikoda.com/xspec/schematron/functions"
+	xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+	xmlns:x="http://www.jenitennison.com/xslt/xspec"	
+	stylesheet="../../../src/functions.xsl">
+		
+	<x:scenario label="constraint-fails()">
+
+		<x:scenario label="True">
+			
+			<x:scenario label="Once">
+			
+				<x:scenario label="Only constraint present.">
+					
+					<x:call function="sch:constraint-fails">
+						<x:param select="ancestor-or-self::document-node()">
+							<svrl:schematron-output>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+							</svrl:schematron-output>
+						</x:param>
+						<x:param select="'id-missing'" />
+					</x:call>
+					
+					<x:expect label="A failed-assert with '[ID: id-missing]' appended to the end of the message  is detected." select="1" />
+					
+				</x:scenario>
+				
+				<x:scenario label="First constraint present.">
+					
+					<x:call function="sch:constraint-fails">
+						<x:param select="ancestor-or-self::document-node()">
+							<svrl:schematron-output>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+								<svrl:failed-assert test="self::*/@surface"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Surface.  At least one surface must be specified for each colour. [ID: surface-missing]</svrl:text>
+								</svrl:failed-assert>
+							</svrl:schematron-output>
+						</x:param>
+						<x:param select="'id-missing'" />
+					</x:call>
+					
+					<x:expect label="A failed-assert with '[ID: id-missing]' appended to the end of the message  is detected." select="1" />
+					
+				</x:scenario>
+				
+				<x:scenario label="Second constraint present.">
+					
+					<x:call function="sch:constraint-fails">
+						<x:param select="ancestor-or-self::document-node()">
+							<svrl:schematron-output>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+								<svrl:failed-assert test="self::*/@surface"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Surface.  At least one surface must be specified for each colour. [ID: surface-missing]</svrl:text>
+								</svrl:failed-assert>
+							</svrl:schematron-output>
+						</x:param>
+						<x:param select="'id-missing'" />
+					</x:call>
+					
+					<x:expect label="A failed-assert with '[ID: id-missing]' appended to the end of the message  is detected." select="1" />
+					
+				</x:scenario>
+				
+				<x:scenario label="Last constraint present.">
+					
+					<x:call function="sch:constraint-fails">
+						<x:param select="ancestor-or-self::document-node()">
+							<svrl:schematron-output>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+								<svrl:failed-assert test="self::*/@surface"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Surface.  At least one surface must be specified for each colour. [ID: surface-missing]</svrl:text>
+								</svrl:failed-assert>
+								<svrl:failed-assert test="self::*[@surface = preceding::colour/@surface]"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Duplicate surface.  A colour has already been specified for this surface. [ID: duplicate-surface]</svrl:text>
+								</svrl:failed-assert>
+							</svrl:schematron-output>
+						</x:param>
+						<x:param select="'id-missing'" />
+					</x:call>
+					
+					<x:expect label="A failed-assert with '[ID: surface-missing]' appended to the end of the message  is detected." select="1" />
+					
+				</x:scenario>
+							
+			</x:scenario>
+			
+			<x:scenario label="More than once.">
+				
+				<x:scenario label="Only constraint present.">
+					
+					<x:call function="sch:constraint-fails">
+						<x:param select="ancestor-or-self::document-node()">
+							<svrl:schematron-output>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+							</svrl:schematron-output>
+						</x:param>
+						<x:param select="'id-missing'" />
+					</x:call>
+					
+					<x:expect label="A failed-assert with an @id of 'id-missing' is detected." select="2" />
+					
+				</x:scenario>
+				
+				<x:scenario label="Other constraints present.">
+					
+					<x:call function="sch:constraint-fails">
+						<x:param select="ancestor-or-self::document-node()">
+							<svrl:schematron-output>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+								<svrl:failed-assert test="self::*/@surface"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Surface.  At least one surface must be specified for each colour. [ID: surface-missing]</svrl:text>
+								</svrl:failed-assert>
+								<svrl:failed-assert test="self::*/@id"
+									role="fatal"
+									location="/scheme/colour">
+									<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+								</svrl:failed-assert>
+							</svrl:schematron-output>
+						</x:param>
+						<x:param select="'id-missing'" />
+					</x:call>
+					
+					<x:expect label="A failed-assert with an @id of 'id-missing' is detected." select="2" />
+					
+				</x:scenario>
+				
+			</x:scenario>
+			
+		</x:scenario>
+
+		<x:scenario label="False">
+			
+			<x:scenario label="No constraints.">
+				
+				<x:call function="sch:constraint-fails">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output />
+					</x:param>
+					<x:param select="'surface-missing'" />
+				</x:call>
+				
+				<x:expect label="No failed-assert with '[ID: surface-missing]' appended to the end of the message  is detected." select="0" />
+				
+			</x:scenario>
+			
+			<x:scenario label="One constraint present.">
+				
+				<x:call function="sch:constraint-fails">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:failed-assert test="self::*/@id"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+							</svrl:failed-assert>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'surface-missing'" />
+				</x:call>
+				
+				<x:expect label="No failed-assert with '[ID: surface-missing]' appended to the end of the message  is detected." select="0" />
+				
+			</x:scenario>
+			
+			<x:scenario label="Two patterns present.">
+				
+				<x:call function="sch:constraint-fails">
+					<x:param select="ancestor-or-self::document-node()">
+						<svrl:schematron-output>
+							<svrl:failed-assert test="self::*/@id"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Missing Colour ID.  Every colour must have an ID. [ID: id-missing]</svrl:text>
+							</svrl:failed-assert>
+							<svrl:failed-assert test="self::*[@surface = preceding::colour/@surface]"
+								role="fatal"
+								location="/scheme/colour">
+								<svrl:text>Duplicate surface.  A colour has already been specified for this surface. [ID: surface-duplicate]</svrl:text>
+							</svrl:failed-assert>
+						</svrl:schematron-output>
+					</x:param>
+					<x:param select="'surface-missing'" />
+				</x:call>
+				
+				<x:expect label="No failed-assert with '[ID: surface-missing]' appended to the end of the message  is detected." select="0" />
+				
+			</x:scenario>
+			
+		</x:scenario>
+	
+	</x:scenario>
+	
+</x:description>
